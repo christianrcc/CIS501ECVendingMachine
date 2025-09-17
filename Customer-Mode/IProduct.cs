@@ -8,5 +8,8 @@ namespace Customer_Mode
 {
     public interface IProduct
     {
+        public string Name { get; }
+        public decimal Price { get; }
+        ProductType Type { get; }
     }
 }

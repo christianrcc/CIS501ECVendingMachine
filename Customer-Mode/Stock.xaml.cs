@@ -20,9 +20,27 @@ namespace Customer_Mode
     /// </summary>
     public partial class Stock : UserControl
     {
-        public Stock()
+        public event EventHandler<ProductEventArgs>? SelectEvent;
+        public IProduct Product { get; init; }
+        public int Quantity { get; private set; }
+        public Stock(IProduct product)
         {
             InitializeComponent();
+            Product = product;
+            AddButton.Click += AddClick;
+            ProductName.Text = product.Name;
+        }
+
+        public bool RemoveItem()
+        {
+            if (Quantity == 0) return false;
+            Quantity--;
+            return true;
+        }
+
+        private void AddClick(object sender, RoutedEventArgs e)
+        {
+            SelectEvent?.Invoke(this, new ProductEventArgs(Product));
         }
     }
 }
