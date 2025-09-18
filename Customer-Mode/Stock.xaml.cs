@@ -34,6 +34,7 @@ namespace Customer_Mode
             {
                 OnPropertyChange(nameof(Quantity));
                 _quantity = value;
+                if (value == 0) AddButton.IsEnabled = false;
             }
         }
         public Stock(IProduct product)

@@ -8,5 +8,6 @@ namespace Customer_Mode
 {
     public enum ProductType
     {
+
     }
 }
