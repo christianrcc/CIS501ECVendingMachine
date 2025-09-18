@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Customer_Mode
 {
-    public class Pepsi
+    public class Snickers
     {
-        public string Name => "Pepsi";
+        public string Name => "Snickers";
 
-        public decimal Price => 5.50m;
+        public decimal Price => 1.49m;
 
-        public ProductType Type => ProductType.Drink;
+        public ProductType Type => ProductType.Candy;
     }
 }
