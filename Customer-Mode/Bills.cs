@@ -8,5 +8,8 @@ namespace Customer_Mode
 {
     public enum Bills
     {
+        ONE_DOLLAR,
+        FIVE_DOLLAR,
+        TEN_DOLLAR
     }
 }
