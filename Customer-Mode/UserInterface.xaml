@@ -1,12 +1,151 @@
-﻿<Window x:Class="Customer_Mode.MainWindow"
+﻿<Window x:Class="Customer_Mode.UserInterface"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Customer_Mode"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Vending Machine" Height="650" Width="980"
+        WindowStartupLocation="CenterScreen">
 
+    <!-- ===== Resources ===== -->
+    <Window.Resources>
+        <!-- How each selected product shows in the cart -->
+        <DataTemplate x:Key="SelectedProductTemplate">
+            <DockPanel>
+                <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                <TextBlock Text=" — " />
+                <TextBlock Text="{Binding Price, StringFormat={}{0:C}}" />
+                <TextBlock Text="  (" />
+                <TextBlock Text="{Binding Type}" />
+                <TextBlock Text=")" />
+            </DockPanel>
+        </DataTemplate>
+
+        <Style x:Key="HeaderText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+
+        <Style x:Key="BigNumber" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style x:Key="MoneyButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="MinWidth" Value="64"/>
+        </Style>
+    </Window.Resources>
+
+    <!-- ===== Layout ===== -->
+    <Grid Background="#0F0F12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- LEFT: product grid (bind to an array/list of Stock controls) -->
+        <Border Grid.Column="0" Margin="16" Padding="16" CornerRadius="14"
+                Background="#1C1F26" BorderBrush="#2E3340" BorderThickness="1">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Style="{StaticResource HeaderText}"
+                           Foreground="#E6E9F0" Text="Choose Your Items"/>
+                <ItemsControl ItemsSource="{Binding Stocks}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <!-- 3 x 2 layout for Pepsi, Coke, Funyuns, Cheetos, Twix, Snickers -->
+                            <UniformGrid Columns="3" Rows="2"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Margin" Value="8"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+            </DockPanel>
+        </Border>
+
+        <!-- RIGHT: balances, money input, cart, actions -->
+        <StackPanel Grid.Column="1" Margin="16" Orientation="Vertical" >
+            <!-- Balance / Total -->
+            <Border Padding="16" CornerRadius="14" Background="#1C1F26"
+                    BorderBrush="#2E3340" BorderThickness="1" Margin="0,0,0,12">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Balance" Foreground="#AAB2C5"/>
+                    <TextBlock Grid.Row="0" HorizontalAlignment="Right"
+                               Foreground="#E6E9F0" Style="{StaticResource BigNumber}"
+                               Text="{Binding UserBalance, StringFormat={}{0:C}}"/>
+                    <Separator Grid.Row="1" Margin="0,8"/>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <TextBlock Text="Total Cost" Foreground="#AAB2C5"/>
+                        <TextBlock Text="{Binding TotalCost, StringFormat={}{0:C}}"
+                                   Foreground="#E6E9F0" Style="{StaticResource BigNumber}"
+                                   HorizontalAlignment="Right" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Money Input (exactly six buttons) -->
+            <Border Padding="16" CornerRadius="14" Background="#1C1F26"
+                    BorderBrush="#2E3340" BorderThickness="1" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource HeaderText}" Foreground="#E6E9F0"
+                               Text="Insert Money"/>
+                    <WrapPanel Margin="0,4,0,0">
+                        <!-- Coins (name them so you can add Click handlers in code-behind if you want) -->
+                        <Button x:Name="QuarterBtn" Style="{StaticResource MoneyButton}" Content="Quarter (¢25)" Tag="Quarter"/>
+                        <Button x:Name="DimeBtn"    Style="{StaticResource MoneyButton}" Content="Dime (¢10)"    Tag="Dime"/>
+                        <Button x:Name="NickelBtn"  Style="{StaticResource MoneyButton}" Content="Nickel (¢5)"  Tag="Nickel"/>
+                    </WrapPanel>
+                    <WrapPanel Margin="0,8,0,0">
+                        <!-- Bills -->
+                        <Button x:Name="OneBtn"  Style="{StaticResource MoneyButton}" Content="$1"  Tag="One"/>
+                        <Button x:Name="FiveBtn" Style="{StaticResource MoneyButton}" Content="$5"  Tag="Five"/>
+                        <Button x:Name="TenBtn"  Style="{StaticResource MoneyButton}" Content="$10" Tag="Ten"/>
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Cart -->
+            <Border Padding="16" CornerRadius="14" Background="#1C1F26"
+                    BorderBrush="#2E3340" BorderThickness="1" Margin="0,0,0,12">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Style="{StaticResource HeaderText}"
+                               Foreground="#E6E9F0" Text="Your Selection"/>
+                    <ListBox ItemsSource="{Binding UserSelection}"
+                             ItemTemplate="{StaticResource SelectedProductTemplate}"
+                             Height="180"
+                             Background="#0F1117" Foreground="#E6E9F0"
+                             BorderBrush="#2E3340"/>
+                </DockPanel>
+            </Border>
+
+            <!-- Actions -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <Button x:Name="FinishBtn" Content="Finish"
+                        Padding="12,8" Margin="0,0,8,0"
+                        Background="#2D7D46" Foreground="White"/>
+                <Button x:Name="RefundBtn" Content="Refund"
+                        Padding="12,8" Margin="0,0,8,0"
+                        Background="#1E3A5F" Foreground="White"/>
+                <Button x:Name="CancelBtn" Content="Cancel"
+                        Padding="12,8"
+                        Background="#7A2323" Foreground="White"/>
+            </StackPanel>
+
+            <!-- Optional status line -->
+            <TextBlock Foreground="#AAB2C5" TextWrapping="Wrap"
+                       Margin="0,8,0,0"
+                       Text="{Binding StatusMessage}" />
+        </StackPanel>
     </Grid>
 </Window>

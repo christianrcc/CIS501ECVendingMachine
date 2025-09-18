@@ -14,9 +14,9 @@ namespace Customer_Mode
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class UserInterface : Window
     {
-        public MainWindow()
+        public UserInterface()
         {
             InitializeComponent();
         }
