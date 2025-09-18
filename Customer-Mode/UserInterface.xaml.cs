@@ -182,8 +182,27 @@ namespace Customer_Mode
 
         private void RecomputeTotals()
         {
-            TotalCost = UserSelection.Sum(p => p.Price);
+            var rawTotal = UserSelection.Sum(p => p.Price);
+
+            if (rawTotal > 20.0m)
+            {
+                TotalCost = Math.Round(rawTotal * 0.95m, 2, MidpointRounding.AwayFromZero);
+
+                // Show discount text if it exists in XAML
+                if (FindName("DiscountText") is TextBlock discount)
+                    discount.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                TotalCost = rawTotal;
+
+                // Hide discount text if it exists
+                if (FindName("DiscountText") is TextBlock discount)
+                    discount.Visibility = Visibility.Collapsed;
+            }
         }
+
+
 
         private void FinishTransaction()
         {

@@ -71,26 +71,59 @@
         <StackPanel Grid.Column="1" Margin="16" Orientation="Vertical" >
             <!-- Balance / Total -->
             <Border Padding="16" CornerRadius="14" Background="#1C1F26"
-                    BorderBrush="#2E3340" BorderThickness="1" Margin="0,0,0,12">
+        BorderBrush="#2E3340" BorderThickness="1" Margin="0,0,0,12">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="Balance" Foreground="#AAB2C5"/>
-                    <TextBlock Grid.Row="0" HorizontalAlignment="Right"
-                               Foreground="#E6E9F0" Style="{StaticResource BigNumber}"
-                               Text="{Binding UserBalance, StringFormat={}{0:C}}"/>
+
+                    <!-- Balance row -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Balance" Foreground="#AAB2C5"/>
+                        <TextBlock Grid.Column="1"
+                 Foreground="#E6E9F0"
+                 Style="{StaticResource BigNumber}"
+                 Text="{Binding UserBalance, StringFormat={}{0:C}}"
+                 HorizontalAlignment="Right"/>
+                    </Grid>
+
                     <Separator Grid.Row="1" Margin="0,8"/>
-                    <StackPanel Grid.Row="2" Orientation="Horizontal">
-                        <TextBlock Text="Total Cost" Foreground="#AAB2C5"/>
-                        <TextBlock Text="{Binding TotalCost, StringFormat={}{0:C}}"
-                                   Foreground="#E6E9F0" Style="{StaticResource BigNumber}"
-                                   HorizontalAlignment="Right" />
+
+                    <!-- Total + Discount -->
+                    <StackPanel Grid.Row="2" Orientation="Vertical">
+
+                        <!-- Total cost row -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Total Cost" Foreground="#AAB2C5"/>
+                            <TextBlock Grid.Column="1"
+                   Foreground="#E6E9F0"
+                   Style="{StaticResource BigNumber}"
+                   Text="{Binding TotalCost, StringFormat={}{0:C}}"
+                   HorizontalAlignment="Right"/>
+                        </Grid>
+
+                        <!-- Discount line (starts hidden) -->
+                        <TextBlock x:Name="DiscountText"
+                 Text="5% Discount Applied"
+                 Foreground="#6CC24A"
+                 FontWeight="SemiBold"
+                 Margin="0,4,0,0"
+                 Visibility="Collapsed"/>
                     </StackPanel>
                 </Grid>
             </Border>
+
+
 
             <!-- Money Input (exactly six buttons) -->
             <Border Padding="16" CornerRadius="14" Background="#1C1F26"
