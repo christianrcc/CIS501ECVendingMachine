@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Customer_Mode
 {
-    public enum ProductType
+    public class Pepsi
     {
-        Chips,
-        Candy,
-        Drink
+
     }
 }
