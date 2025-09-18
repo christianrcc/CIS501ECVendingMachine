@@ -47,27 +47,25 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- LEFT: product grid (bind to an array/list of Stock controls) -->
+        <!-- LEFT: product grid (we inject Stock controls directly) -->
         <Border Grid.Column="0" Margin="16" Padding="16" CornerRadius="14"
-                Background="#1C1F26" BorderBrush="#2E3340" BorderThickness="1">
+        Background="#1C1F26" BorderBrush="#2E3340" BorderThickness="1">
             <DockPanel>
                 <TextBlock DockPanel.Dock="Top" Style="{StaticResource HeaderText}"
-                           Foreground="#E6E9F0" Text="Choose Your Items"/>
-                <ItemsControl ItemsSource="{Binding Stocks}">
+                   Foreground="#E6E9F0" Text="Choose Your Items"/>
+
+                <ItemsControl x:Name="ProductItems">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <!-- 3 x 2 layout for Pepsi, Coke, Funyuns, Cheetos, Twix, Snickers -->
                             <UniformGrid Columns="3" Rows="2"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemContainerStyle>
-                        <Style TargetType="ContentPresenter">
-                            <Setter Property="Margin" Value="8"/>
-                        </Style>
-                    </ItemsControl.ItemContainerStyle>
+                    <!-- ItemContainerStyle removed on purpose -->
                 </ItemsControl>
             </DockPanel>
         </Border>
+
+
 
         <!-- RIGHT: balances, money input, cart, actions -->
         <StackPanel Grid.Column="1" Margin="16" Orientation="Vertical" >

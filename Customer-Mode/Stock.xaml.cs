@@ -32,9 +32,12 @@ namespace Customer_Mode
             get => _quantity;
             private set
             {
-                OnPropertyChange(nameof(Quantity));
-                _quantity = value;
-                if (value == 0) AddButton.IsEnabled = false;
+                _quantity = value; // <-- update the backing field first
+                OnPropertyChange(nameof(Quantity)); // then notify UI
+
+                // Disable Add button if stock is depleted
+                if (AddButton != null)
+                    AddButton.IsEnabled = _quantity > 0;
             }
         }
         public Stock(IProduct product)

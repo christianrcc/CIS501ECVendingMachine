@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Customer_Mode
 {
-    public class Snickers
+    public class Snickers : IProduct
     {
         public string Name => "Snickers";
 
